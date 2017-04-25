@@ -1,0 +1,39 @@
+  div {
+    border: 1px solid gray;
+    padding: 10px;
+    margin: 10px;
+  }
+
+  table {
+    height: 90%;
+    margin: 20px;
+  }
+
+  table tr, table td {
+    width: 100px;
+    text-align: center;
+    border: 1px solid lightgray;
+    padding: 30px;
+  }
+
+  button {
+    width: 80px;
+    height: 80px;
+  }
+
+  #main {
+    width: 545px;
+  }
+
+  #display {
+    width: 500px;
+    height: 100px;
+    font-size: 400%;
+    text-align: right;
+    line-height: 130px;
+  }
+
+  #buttons {
+    width: 500px;
+    height: 500px;
+  }
