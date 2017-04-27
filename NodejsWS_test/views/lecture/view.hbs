@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>HTML</title>
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <style>
+  .container {
+    width: 600px;
+    margin: 0px auto;
+  }
+  </style>
+</head>
+<body>
+<div class="container">
+<h1>강의 정보</h1>
+{{#if detail}}
+<form class="form-horizontal" action="update.do" method="post">
+{{else}}
+<form class="form-horizontal" action="add.do" method="post">
+{{/if}}
+{{#if detail}}
+  <div class="form-group bit-view">
+    <label class="col-sm-2 control-label">번호</label>
+    <div class="col-sm-10">
+      <input type="hidden" name="no" value="{{data.lno}}">
+      <p class="form-control-static" id="fi-no">{{data.lno}}</p>
+    </div>
+  </div>
+{{/if}}
+
+<div class="form-group">
+  <label for="fi-titl" class="col-sm-2 control-label">제목</label>
+  <div class="col-sm-8">
+    <input type="text" class="form-control" name="title"
+    id="fi-titl" placeholder="제목" value="{{data.titl}}">
+  </div>
+</div>
+<div class="form-group">
+  <label for="fi-dscp" class="col-sm-2 control-label">설명</label>
+  <div class="col-sm-8">
+    <textarea id='fi-dscp' class="form-control" name="description"
+    rows="5" placeholder="설명" value="{{data.dscp}}"></textarea>
+  </div>
+</div>
+<div class="form-group">
+  <label for="fi-duration" class="col-sm-2 control-label">강의 기간</label>
+  <div class="col-sm-4">
+    <input type="date" class="form-control" name="startDate"
+    id="fi-sdt" placeholder="시작일" value="{{data.sdt}}">
+    <input type="date" class="form-control" name="endDate"
+    id="fi-edt" placeholder="종료일" value="{{data.edt}}">
+  </div>
+</div>
+
+<div class="form-group">
+  <label for="fi-qty" class="col-sm-2 control-label">수강인원</label>
+  <div class="col-sm-4">
+    <input type="number" class="form-control" name="quantity"
+    id="fi-qty" placeholder="최대 수강 인원" value="{{data.qty}}">
+  </div>
+</div>
+<div class="form-group">
+  <label for="fi-pric" class="col-sm-2 control-label">수강료</label>
+  <div class="col-sm-4">
+    <input type="number" class="form-control" name='price'
+    id="fi-pric" placeholder="수강료" value='{{data.pric}}'>
+  </div>
+</div>
+<div class="form-group">
+  <label for="fi-thrs" class="col-sm-2 control-label">강의 시간</label>
+  <div class="col-sm-4">
+    <input type="text" class="form-control" name="totalTime"
+    id="fi-thrs" placeholder="총 강의 시간" value="{{data.thrs}}">
+  </div>
+</div>
+<div class="form-group">
+  <label for="fi-crm" class="col-sm-2 control-label">강의실</label>
+  <div class="col-sm-4">
+    <select class="form-control" id='fi-crm' name='classroomNo'>
+      <option value='0' {{checkClassroomDefault}}>강의실을 선택하세요.</option>
+      {{#each classroomList}}
+      <option value="{{crmno}}" selected='{{checkClassroom}}'>{{name}}</option>
+      {{/each}}
+    </select>
+  </div>
+ </div>
+ <div class="form-group">
+   <label for="fi-mgr" class="col-sm-2 control-label">매니저</label>
+   <div class="col-sm-4">
+     <select class="form-control" id='fi-mgr' name='managerNo'>
+       <option value='0' {{checkManagerDefault}}>담당 매니저를 선택하세요.</option>
+       {{#each managerList}}
+       <option value="{{mrno}}" selected="{{checkManager}}">{{name}}</option>
+       {{/each}}
+     </select>
+   </div>
+  </div>
+
+
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+{{#if detail}}
+      <button type="submit" class="btn btn-primary bit-view" id="upd-btn">변경</button>
+      <a href="delete.do?no={{data.mno}}" class="btn btn-primary bit-view" id="del-btn">삭제</a>
+{{else}}
+      <button type="submit" class="btn btn-primary bit-new" id="add-btn">추가</button>
+{{/if}}
+      <a href="list.do" class="btn btn-primary" id="lst-btn">목록</a>
+    </div>
+  </div>
+</form>
+</div>
+
+</script>
+</body>
+</html>
+
+
+
+
+<!-- -->
