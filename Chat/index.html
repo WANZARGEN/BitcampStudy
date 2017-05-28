@@ -1,0 +1,32 @@
+<!-- AJAX 사용법 -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>HTML</title>
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <style>
+  .container {
+    width: 600px;
+    margin: 0px auto;
+  }
+  </style>
+</head>
+<body>
+<div class="container">
+<h1>WANZARGEN MESSENGER</h1>
+<div>
+  <textarea  id="messenger-box" rows="15" cols="50"></textarea><br>
+  <input id='message' placeholder="message"> <button type="button" id="send">보내기</button>
+</div>
+
+<div>
+  <input id='host' value="localhost"> <input id='port' value='8888'> <button type="button" id="connect">연결</button><br>
+  <input id='user' placeholder="user name">
+</div>
+
+</div>
+<script src='index.js'></script>
+
+</body>
+</html>

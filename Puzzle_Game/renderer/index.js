@@ -5,63 +5,140 @@ var shuffleBtn = $('#shuffle-btn')
 var body = $('body')
 var testBtn = $('#test-btn')
 
+//-------------------------------------------
 var blankPiece
 var leftPiece
 var rightPiece
 var upperPiece
 var lowerPiece
 var values//array
-var blankId
 
-shuffle()
+//--------------------------------------------
+var blankPosition//blank button position
+var puzzles//array
+
+var size = 4
+const buttonSize = 115
+const buttonMargin = 5
+
+//shuffle()
+setBoard()
 
 shuffleBtn.click(function() {
   shuffle()
 })
 
-function shuffle() {
-  values = []
-  var randomNo
-  var checkArr
-  var randomIndex = 0
-  while(randomIndex <= 15) {
-    randomNo = parseInt(Math.random() *  150 / 9)
-    checkArr = true
-    for (var i = 0; i < values.length; i++) {
-      if(values[i] == randomNo) {
-        i = values.length
-        checkArr = false
-      }
-    }
-    if(checkArr && randomNo != 16) {
-      values[i] = randomNo
-      randomIndex++
-    }
-  }//while. set 0 ~ 15 in array
-  setBoard()
-  setMovingPieces()
-  checkSolvability()
-}//shuffle()
+$(document.body).on('click', '.move', function() {
+  var no = $(this).index()
+  move(no)
+})
 
 function setBoard() {
   board.html('')
-  for (var i = 0; i < values.length; i++) {
-    if(values[i] != 0) {
-      $('<button type="button">').text(values[i])
-                                 .attr('id', 'piece-' + i)
-                                 .attr('class', 'hvr-buzz-out')
-                                 .appendTo(board)
-    } else {
-      blankPiece = $('<button type="button">').attr('id', 'piece-' + i)
-                                              .attr('style', 'background-color: Aquamarine;')
-                                              .attr('class', 'hvr-buzz-out')
-                                              .appendTo(board)
-      blankId = i
+       .css('width', (buttonSize + buttonMargin * 2) * size + 'px')
+       .css('height', (buttonSize + buttonMargin * 2) * size + 'px')
+  if(!puzzles) {
+    puzzles = []
+    for(var i = 1; i < size ** 2; i++) {
+      puzzles[i] = $('<button>').attr('id', 'piece-' + i).text(i)
+      .addClass('hvr-buzz-out')
+      .appendTo(board)
+    }
+    puzzles[0] = $('<button>').attr('id', 'piece-0').text('')
+    .addClass('hvr-buzz-out')
+    .attr('style', 'background-color: Aquamarine;')
+    .appendTo(board)
+
+    shuffle()
+    //console.log($('div>button:nth-child(4)'));//n번째 자식노드 찾기!
+  } else {
+    for (var i = 0; i < puzzles.length; i++) {
+      puzzles[i].appendTo(board)
+                .css('left', getLeftPosition(i) + 'px')
+                .css('top', getTopPosition(i) + 'px')
+      if(puzzles[i].attr('id') == 'piece-0')
+        blankPosition = i
     }
   }
-  console.log(board.children())
-  console.log(blankPiece, blankId)
+
+  //console.log(puzzles[1].next())
 }//setBoard()
+
+function shuffle() {
+  var nums = []
+  var newPuzzles = []
+  for (var i = 0; i < size ** 2; i++)
+    nums.push(i)
+
+  for (var i = 0; i < size ** 2; i++) {
+    var randomNo = Math.floor(Math.random() * nums.length)// 0 ~ 15 (0 <= x < 16)
+    var value = nums.splice(randomNo, 1)//똑같은 숫자가 나와도, splice를 해서 한번 쓴 값을 줄여나가면 중복되는 값이 들어가지 않음.
+    newPuzzles[i] = puzzles[value]
+  }
+  puzzles = newPuzzles
+  setBoard()
+  setMovingPieces()
+  // checkSolvability()
+}//shuffle()
+
+function getTopPosition(i) {
+  return (parseInt((i / size)) * buttonSize + parseInt((i / size)) * buttonMargin * 2 + buttonMargin)
+}
+
+function getLeftPosition(i) {
+  return ((i % size) * buttonSize + (i % size) * buttonMargin * 2 + buttonMargin)
+}
+
+function move(no) {
+  console.log(no);
+  puzzles[no].animate({
+    'top' : getTopPosition(no) - (buttonSize + buttonMargin * 2) + "px"
+  })
+  puzzles[blankPosition].animate({
+  'top' : getTopPosition(blankPosition) + (buttonSize + buttonMargin * 2) + "px"
+}, function() {
+  var temp = blankPosition
+  blankPosition = no
+  no = temp
+  puzzles[no].stop()
+  puzzles[blankPosition].removeClass('move').stop()
+
+  
+  console.log(blankPosition, no);
+});
+  //blankPosition = no
+
+
+}
+
+
+
+function setMovingPieces() {
+
+  // if(blankPosition >= size)//upper
+  //   puzzles[blankPosition - size].addClass('move')
+  // if(blankPosition % size < (size - 1))//right
+  //   puzzles[blankPosition + 1].addClass('move')
+  if(blankPosition < (size ** 2 - size))//lower
+    puzzles[blankPosition + size].addClass('move')
+  // if(blankPosition % size > 0)//left
+  //   puzzles[blankPosition - 1].addClass('move')
+
+}//setMovingPieces()
+
+function clearMovingPieces() {
+
+  if(blankPosition >= size)//upper
+    puzzles[blankPosition - size].removeClass('move')
+  if(blankPosition % size < (size - 1))//right
+    puzzles[blankPosition + 1].removeClass('move')
+  if(blankPosition < (size ** 2 - size))//lower
+    puzzles[blankPosition + size].removeClass('move')
+  if(blankPosition % size > 0)//left
+    puzzles[blankPosition - 1].removeClass('move')
+
+}
+
 
 
 function checkSolvability() {
@@ -96,51 +173,51 @@ function checkSolvability() {
 }//if(inversions $ 2 != 0)
 }//checkSolvability()
 
-function setMovingPieces() {
-  if(lowerPiece)
-    lowerPiece.unbind('click')
-              .attr('class', 'hvr-buzz-out')
-  if(upperPiece)
-    upperPiece.unbind('click')
-              .attr('class', 'hvr-buzz-out')
-  if(leftPiece)
-    leftPiece.unbind('click')
-              .attr('class', 'hvr-buzz-out')
-  if(rightPiece)
-    rightPiece.unbind('click')
-              .attr('class', 'hvr-buzz-out')
-
-  blankPiece.attr('class', '')
-
-  lowerPiece = undefined
-  upperPiece = undefined
-  leftPiece = undefined
-  rightPiece = undefined
-  if(blankId < 12) {
-    lowerPiece = $('#piece-' + (blankId + 4))
-    lowerPiece.click(moveUp)
-              .attr('class', 'hvr-float')
-  }
-  if(blankId > 3) {
-    upperPiece = $('#piece-' + (blankId - 4))
-    upperPiece.click(moveDown)
-              .attr('class', 'hvr-sink')
-  }
-  if(blankId != 0 && blankId != 4 && blankId != 8 && blankId != 12) {
-    leftPiece = $('#piece-' + (blankId - 1))
-    leftPiece.click(moveRight)
-             .attr('class', 'hvr-forward')
-  }
-  if(blankId != 3 && blankId != 7 && blankId != 11 && blankId != 15) {
-    rightPiece = $('#piece-' + (blankId + 1))
-    rightPiece.click(moveLeft)
-              .attr('class', 'hvr-backward')
-  }
-}//setMovingPieces()
+// function setMovingPieces() {
+//   if(lowerPiece)
+//     lowerPiece.unbind('click')
+//               .attr('class', 'hvr-buzz-out')
+//   if(upperPiece)
+//     upperPiece.unbind('click')
+//               .attr('class', 'hvr-buzz-out')
+//   if(leftPiece)
+//     leftPiece.unbind('click')
+//               .attr('class', 'hvr-buzz-out')
+//   if(rightPiece)
+//     rightPiece.unbind('click')
+//               .attr('class', 'hvr-buzz-out')
+//
+//   blankPiece.attr('class', '')
+//
+//   lowerPiece = undefined
+//   upperPiece = undefined
+//   leftPiece = undefined
+//   rightPiece = undefined
+//   if(blankPosition < (size ** 2 - size)) {
+//     lowerPiece = $('#piece-' + (blankPosition + size))
+//     lowerPiece.click(moveUp)
+//               .attr('class', 'hvr-float')
+//   }
+//   if(blankPosition > (size - 1)) {
+//     upperPiece = $('#piece-' + (blankPosition - size))
+//     upperPiece.click(moveDown)
+//               .attr('class', 'hvr-sink')
+//   }
+//   if(blankPosition % size != 0) {
+//     leftPiece = $('#piece-' + (blankPosition - 1))
+//     leftPiece.click(moveRight)
+//              .attr('class', 'hvr-forward')
+//   }
+//   if(blankPosition % size != (size - 1)) {
+//     rightPiece = $('#piece-' + (blankPosition + 1))
+//     rightPiece.click(moveLeft)
+//               .attr('class', 'hvr-backward')
+//   }
+// }//setMovingPieces()
 
 function moveUp() {
   console.log('move up!')
-  blankId = parseInt(lowerPiece.attr('id').substring(6))
+  blankPosition = parseInt(lowerPiece.attr('id').substring(6))
   var temp = parseInt(lowerPiece.text())
 
   blankPiece = lowerPiece
@@ -151,16 +228,16 @@ function moveUp() {
   upperPiece.text(temp)
             .attr('style', 'background-color: white;')
 
-  values[blankId] = 0
+  values[blankPosition] = 0
   if(upperPiece)
-    values[blankId - 4] = temp
+    values[blankPosition - size] = temp
 
   checkArrangement()
 }//moveUp()
 
 function moveDown() {
   console.log('move down!')
-  blankId = parseInt(upperPiece.attr('id').substring(6))
+  blankPosition = parseInt(upperPiece.attr('id').substring(6))
   var temp = parseInt(upperPiece.text())
 
   blankPiece = upperPiece
@@ -171,16 +248,16 @@ function moveDown() {
   lowerPiece.text(temp)
             .attr('style', 'background-color: white;')
 
-  values[blankId] = 0
+  values[blankPosition] = 0
   if(lowerPiece)
-    values[blankId + 4] = temp
+    values[blankPosition + size] = temp
 
   checkArrangement()
 }//moveDown()
 
 function moveLeft() {
   console.log('move left!')
-  blankId = parseInt(rightPiece.attr('id').substring(6))
+  blankPosition = parseInt(rightPiece.attr('id').substring(6))
   var temp = parseInt(rightPiece.text())
 
   blankPiece = rightPiece
@@ -191,16 +268,16 @@ function moveLeft() {
   leftPiece.text(temp)
             .attr('style', 'background-color: white;')
 
-  values[blankId] = 0
+  values[blankPosition] = 0
   if(leftPiece)
-    values[blankId - 1] = temp
+    values[blankPosition - 1] = temp
 
   checkArrangement()
 }//moveLeft()
 
 function moveRight() {
   console.log('move right!')
-  blankId = parseInt(leftPiece.attr('id').substring(6))
+  blankPosition = parseInt(leftPiece.attr('id').substring(6))
   var temp = parseInt(leftPiece.text())
 
   blankPiece = leftPiece
@@ -211,9 +288,9 @@ function moveRight() {
   rightPiece.text(temp)
             .attr('style', 'background-color: white;')
 
-  values[blankId] = 0
+  values[blankPosition] = 0
   if(rightPiece)
-    values[blankId + 1] = temp
+    values[blankPosition + 1] = temp
 
   checkArrangement()
 }//moveRight()

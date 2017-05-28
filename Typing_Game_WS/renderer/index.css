@@ -1,0 +1,103 @@
+body{
+  font-family: 'Lato', '나눔고딕 Regular', 'AppleGothic', sans-serif;
+  background: #F8A434;
+ color: #FDFCFB;
+ text-align: center;
+}
+
+#border {
+  height: 500px;
+  width: 600px;
+  margin: 7% auto;
+  position: relative;
+  border: solid 0.5px #FDDDFC;/*#FFAA99;*/
+  align-items: center;
+  
+}
+
+.timer {
+  position: absolute;
+  color: #FDDDFC;
+  background: #F8A434;
+  font-family: inherit;
+  font-size: 60px;
+  font-weight: 600;
+  top: -45px;
+  left: 455px;
+}
+
+.header {
+  font-size: 70px;
+  text-transform: uppercase;
+  margin-top: 10%;
+  font-family: inherit;
+  letter-spacing: 5px;
+}
+
+
+.quiz {
+  position: absolute;
+  top: 120px; left: 50px;
+  width: 500px;
+  font-family: inherit;
+  font-size: 60px;
+  line-height: 1.3em;
+}
+
+.button {
+  height: 44px;
+  border: none;
+}
+
+#input-area {
+  position: absolute;
+  width:400px;
+  height: 50px;
+  top: 300px; left: 100px;
+  background: #FDFDFB;
+  font-family: inherit;
+  color: #737373;
+  letter-spacing: 0.5px;
+  border-radius: 5px;
+  font-size: 23px;
+  text-align: center;
+}
+
+
+#enter {
+  position: absolute;
+  width: 25%;
+  height: 46px;
+  top: 400px; left: 220px;
+  background: #E86C8D;
+  font-family: inherit;
+  font-weight: bold;
+  color: inherit;
+  letter-spacing: 1px;
+  border-radius: 5px;
+  margin: 10px;
+  cursor: pointer;
+  transition: background .3s ease-in-out;
+}
+
+
+#submit:hover {
+  background: #d45d7d;
+}
+
+
+input:focus {
+  outline: none;
+  outline: 2px solid #E86C8D;
+  box-shadow: 0 0 2px #E86C8D;
+}
+
+/*by WANZARGEN*/
+#owner {
+  position: absolute;
+  font-family: "Nunito", sans-serif;
+  text-align: center;
+  right:0; bottom:10px; left:0px;
+  font-size: 16px;
+  color: #FFDDDF;
+}
