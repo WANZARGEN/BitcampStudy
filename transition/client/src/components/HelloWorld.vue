@@ -1,19 +1,19 @@
 <template>
-  <div class="hello">
+  <div>
     
-    <div class="text-center">
-      <img class="logo" src="../assets/logo.png">
-      <img class="logo" src="../assets/logo.png">
-      <img class="logo" src="../assets/logo.png">
-    </div>
+    <transition-group tag="div" class="text-center">
+      <img key="0" class="logo" src="../assets/logo.png">
+      <img key="1" class="logo" src="../assets/logo.png">
+      <img key="2" class="logo" src="../assets/logo.png">
+    </transition-group>
 
-    <div class="separator"></div>
+    <!-- <div class="separator"></div>
 
     <div class="text-center">
       <div class="img-container"><img class="logo" src="../assets/logo.png"></div>
       <div class="img-container"><img class="logo" src="../assets/logo.png"></div>
       <div class="img-container"><img class="logo" src="../assets/logo.png"></div>
-    </div>
+    </div> -->
 
 
     

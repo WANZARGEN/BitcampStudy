@@ -32,10 +32,10 @@ h1 {
   margin-bottom: 80px;
 }
 h2 {
-  margin-top: 40px;
+  margin-top: 80px;
 }
 .router-view {
   width: 100%;
-  min-height: 60vh;
+  // min-height: 60vh;
 }
 </style>
